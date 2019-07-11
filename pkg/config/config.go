@@ -1,3 +1,5 @@
+// TODO: add a func to get config by key and unmarshal into a passed in structure.
+
 package config
 
 import (
@@ -9,13 +11,15 @@ import (
 )
 
 type (
-	service struct {
+	// Service is the structure for the service information configuration.
+	Service struct {
 		Group   string
 		Name    string
 		Version string
 	}
 
-	db struct {
+	// DB is the structure for the main database configuration.
+	DB struct {
 		Type     string
 		Host     string
 		Port     int
@@ -25,21 +29,22 @@ type (
 		Log      bool
 	}
 
-	mgmtEndpoint struct {
-		Port            int
-		BaseRoutingPath string
+	// Management is the structure for the management http endpoint configuration.
+	Management struct {
+		Endpoint struct {
+			Port            int
+			BaseRoutingPath string
+		}
+		Health struct {
+			Path string
+			Full bool
+		}
 	}
 
-	mgmtHealth struct {
-		Path string
-		Full bool
-	}
-	management struct {
-		Endpoint mgmtEndpoint
-		Health   mgmtHealth
-	}
-
-	log struct {
+	// Log is the structure for the logger configuration.
+	// If not present, the Machinery will use a default logger provided
+	// by the "gm-log" package.
+	Log struct {
 		Path     string
 		Filename string
 		Console  struct {
@@ -59,7 +64,8 @@ type (
 		ForceFormatting bool
 	}
 
-	api struct {
+	// API is the structure for the Http API server and app configuration.
+	API struct {
 		Endpoint struct {
 			Port            int
 			BaseRoutingPath string
@@ -93,11 +99,11 @@ type (
 
 	// Configuration describe the type for the configuration file
 	Configuration struct {
-		Service    service
-		API        api
-		DB         db
-		Management management
-		Log        log
+		Service    Service
+		API        API
+		DB         DB
+		Management Management
+		Log        Log
 		Ldap       Ldap
 	}
 )
